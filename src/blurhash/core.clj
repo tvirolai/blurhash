@@ -1,7 +1,15 @@
 (ns blurhash.core
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [clojure.set :refer [subset?]]
+            [blurhash.base83 :refer [alphabet]]
+            [clojure.spec.alpha :as s])
   (:import (java.awt.image BufferedImage)
            (javax.imageio ImageIO)))
+
+(s/def ::blurhash
+  (s/and string?
+         #(> (count %) 6)
+         #(subset? (set %) (set alphabet))))
 
 (defn srgb->linear
   "Linear floating point 0.0-1.0 -> srgb integer (0-255)"

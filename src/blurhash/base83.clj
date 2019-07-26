@@ -1,7 +1,7 @@
 (ns blurhash.base83
   (:require [clojure.string :as s]))
 
-(def ^:private alphabet
+(def alphabet
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%*+,-.:;=?@[]^_{|}~")
 
 (defn decode [string]
