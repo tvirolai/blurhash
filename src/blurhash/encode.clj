@@ -1,33 +1,37 @@
-(ns blurhash.encode)
+(ns blurhash.encode
+  (:require [blurhash.core :as bh]))
 
-(defn encode-component [i j height width image]
-  (let [norm-factor (if (every? zero? (list i j))
-                      1.0
-                      2.0)
-        wtimesh (* width height)
-        means (vals
-                (apply merge-with +
-                       (for [y (range height)
-                             x (range width)
-                             :let [basis (* norm-factor
-                                            (Math/cos (/ (* Math/PI (float i) (float x)) width))
-                                            (Math/cos (/ (* Math/PI (float j) (float y)) height)))]]
-                         [{:0 (* basis image[y][x][0])
-                           :1 (* basis image[y][x][1])
-                           :2 (* basis image[y][x][2])}])))]
-  (mapv #(-> %1 (/ wtimesh) float))))
+(defn ->basis [x y i j width height norm-factor]
+  (* norm-factor
+     (Math/cos (/ (* Math/PI x i) width))
+     (Math/cos (/ (* Math/PI y j) height))))
 
-(defn encode-components [comp-x comp-y height width image]
+(defn encode-component [i j height width norm-factor image-linear]
+  (let [comp-data (for [y (range height)
+                        x (range width)
+                        :let [basis (->basis x y i j width height norm-factor)]]
+                    (mapv (partial * basis) (nth (nth image-linear x) y)))]
+    (->> comp-data
+         (apply map +)
+         (mapv #(/ % (* height width))))))
+
+(defn encode-components [comp-x comp-y height width image-linear]
   (vec
     (for [j (range comp-y)
-          i (range comp-x)]
-      (encode-component i j height width image))))
+          i (range comp-x)
+          :let [norm-factor (if (every? zero? (list i j))
+                              1.0
+                              2.0)]]
+      (encode-component i j height width norm-factor image-linear))))
 
 (defn encode
   ([image]
-   (encode image 4 4))
-  ([image comp-x comp-y]
+   (encode image 4 4 false))
+  ([image comp-x comp-y linear]
    (let [height (count image)
          width (count (first image))
-         components (encode-components comp-x comp-y height width image)
+         image-linear (if-not linear
+                        (mapv (fn [row] (mapv bh/srgb->linear row)) image)
+                        image)
+         components (encode-components comp-x comp-y height width image-linear)
          ])))

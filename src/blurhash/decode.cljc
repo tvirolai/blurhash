@@ -58,7 +58,6 @@
       (mapv linear->srgb res)
       res)))
 
-
 (defn decode [blurhash w h & [punch linear]]
   (let [punch (or punch 1.0)
         linear (or linear false)

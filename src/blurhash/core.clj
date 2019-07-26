@@ -2,8 +2,11 @@
   (:require [clojure.java.io :as io]
             [clojure.set :refer [subset?]]
             [blurhash.base83 :refer [alphabet]]
-            [clojure.spec.alpha :as s])
+            [clojure.spec.alpha :as s]
+            [mikera.image.core :as img]
+            [clojure.core.matrix :as mat])
   (:import (java.awt.image BufferedImage)
+           (java.awt Color)
            (javax.imageio ImageIO)))
 
 (s/def ::blurhash
@@ -36,14 +39,18 @@
   (* (if (neg? v) -1 1)
      (Math/pow (Math/abs v) exp)))
 
-(defn file->pixels [path]
-  (let [data (-> path io/file ImageIO/read .getRaster .getDataBuffer .getData)]
-    (->> data
-         (map signed->unsigned)
-         (partition 3)
-         (map vec))))
+(defrecord Pixel [r g b])
 
-(defn load-image []
-  (let [path "./resources/example.jpg"
-        pic (-> path io/file ImageIO/read)]
-    pic))
+(defn file->pixels [path]
+  (let [image (-> path io/file ImageIO/read)
+        data (-> image .getRaster .getDataBuffer .getData)
+        width (.getWidth image)
+        height (.getHeight image)]
+    (partition width
+               (for [x (range width)
+                     y (range height)
+                     :let [rgb (.getRGB image x y)
+                           rgb-object (new Color rgb)]]
+                 (vector (.getRed rgb-object)
+                         (.getGreen rgb-object)
+                         (.getBlue rgb-object))))))
