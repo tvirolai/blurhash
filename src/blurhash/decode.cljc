@@ -1,10 +1,7 @@
 (ns blurhash.decode
   (:require [blurhash.base83 :as base83]
-            [blurhash.core :refer [srgb->linear sign-pow]]
+            [blurhash.core :refer [srgb->linear linear->srgb sign-pow]]
             [clojure.spec.alpha :as s]))
-
-(def tila
-  (atom {}))
 
 (defn decode-dc [value]
   (mapv srgb->linear
@@ -40,18 +37,36 @@
   :args :blurhash.core/blurhash
   :ret (s/map-of #{:size-x :size-y} int?))
 
+(defn get-real-maxval [blurhash punch]
+  (let [quant-max-val (base83/decode (str (second blurhash)))]
+    (* punch (/ (float (inc quant-max-val)) 166.0))))
+
 (defn get-colors [blurhash size-x size-y max-val]
   (let [dc (decode-dc (base83/decode (subs blurhash 2 6)))
         ac (for [value (range 1 (* size-x size-y))]
              (decode-ac blurhash value max-val))]
     (conj ac dc)))
 
+(defn decode-pixel [x y size-x size-y colors width height linear]
+  (let [res (apply mapv +
+                   (for [j (range size-y)
+                         i (range size-x)
+                         :let [basis (->basis x y i j width height)
+                               color (nth colors (+ i (* j size-x)))]]
+                     (mapv (partial * basis) color)))]
+    (if-not linear
+      (mapv linear->srgb res)
+      res)))
+
+
 (defn decode [blurhash w h & [punch linear]]
   (let [punch (or punch 1.0)
         linear (or linear false)
-        quant-max-val (base83/decode (str (second blurhash)))
-        real-max-val (* punch (/ (float (inc quant-max-val)) 166.0))
         {:keys [size-x size-y]} (decode-components blurhash)
         dc-val (base83/decode (subs blurhash 2 6))
-        colors (get-colors blurhash size-x size-y real-max-val)]
-    colors))
+        colors (get-colors blurhash size-x size-y (get-real-maxval blurhash punch))]
+    (for [y (range h)]
+      (vec
+        (for [x (range w)
+              :let [pixel (decode-pixel x y size-x size-y colors w h linear)]]
+          pixel)))))
