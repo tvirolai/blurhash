@@ -1,20 +1,37 @@
 (ns blurhash.core-test
   (:require [clojure.test :refer :all]
-            [blurhash.core :refer :all]))
+            [blurhash.core :refer :all]
+            [clojure.java.io :as io]))
 
-; Testing that the functions work as expected by using some inputs
-; from from other BH implementations.
+(def test-file-name
+  "./resources/example.jpg")
 
-(deftest srgb->linear-test
-  (is (= 0.8631572134541023 (srgb->linear 239)))
-  (is (= 0.003035269835488375 (srgb->linear 10))))
+(def blurred-test-file-name
+  "./resources/example-blurred.png")
 
-(deftest linear->srgb-test
-  (is (= 170 (linear->srgb 0.4)))
-  (is (= 239 (linear->srgb (srgb->linear 239)))))
+(def temporary-file
+  "./resources/test-file.png")
 
-(deftest signed->unsigned-test
-  (is (= 227 (signed->unsigned -29)))
-  (is (= 100 (signed->unsigned 100))))
+(defn with-temp-file-cleaned [f]
+  (f)
+  (let [temp-file (io/file temporary-file)]
+    (when (.isFile temp-file)
+      (io/delete-file temp-file))))
 
-(run-tests)
+; (use-fixtures :once with-temp-file-cleaned)
+
+(deftest file->pixels-test
+  (testing "Pixels in the matrix from the read file match the computed values"
+    (let [blurred-matrix (file->pixels blurred-test-file-name)]
+      (is (= [158 169 150] (first (first blurred-matrix))))
+      (is (= [159 145 124] (first (last blurred-matrix))))
+      (is (= [148 134 138] (last (last blurred-matrix))))
+      (is (= [191 180 180] (nth (second blurred-matrix) 200))))))
+
+#_(deftest io-test
+  (testing "Round-tripping (file->matrix->file)"
+    (let [orig (file->pixels test-file-name)
+          round-tripped (do
+                          (write-matrix-to-image orig temporary-file)
+                          (file->pixels temporary-file))]
+      (is (= orig round-tripped)))))

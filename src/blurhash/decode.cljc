@@ -1,10 +1,9 @@
 (ns blurhash.decode
   (:require [blurhash.base83 :as base83]
-            [blurhash.core :refer [srgb->linear linear->srgb sign-pow]]
-            [clojure.spec.alpha :as s]))
+            [blurhash.util :as util]))
 
 (defn decode-dc [value]
-  (mapv srgb->linear
+  (mapv util/srgb->linear
         (vector (bit-shift-right value 16)
                 (bit-and (bit-shift-right value 8) 255)
                 (bit-and value 255))))
@@ -13,29 +12,23 @@
 	(let [ac-component (base83/decode (subs blurhash
                                           (+ 4 (* 2 value))
                                           (+ 4 (* 2 (inc value)))))]
-    [(* maxvalue (sign-pow (/ (- (int (/ ac-component (* 19 19))) 9.0) 9.0) 2.0))
-     (* maxvalue (sign-pow (/ (- (float (mod (int (/ ac-component 19)) 19)) 9.0) 9.0) 2.0))
-     (* maxvalue (sign-pow (/ (- (mod ac-component 19) 9.0) 9.0) 2.0))]))
+    [(* maxvalue (util/sign-pow (/ (- (int (/ ac-component (* 19 19))) 9.0) 9.0) 2.0))
+     (* maxvalue (util/sign-pow (/ (- (float (mod (int (/ ac-component 19)) 19)) 9.0) 9.0) 2.0))
+     (* maxvalue (util/sign-pow (/ (- (mod ac-component 19) 9.0) 9.0) 2.0))]))
 
 (defn ->basis [x y i j width height]
   (* (Math/cos (/ (* Math/PI x i) width))
      (Math/cos (/ (* Math/PI y j) height))))
 
 (defn decode-components [blurhash]
-  (if-not (s/valid? :blurhash.core/blurhash blurhash)
-    (throw (Exception. (str (s/explain-data :blurhash.core/blurhash blurhash))))
-    (let [size-info (base83/decode (str (first blurhash)))
-          size-x (inc (int (/ size-info 9)))
-          size-y (inc (mod size-info 9))]
-      (if (= (count blurhash)
-             (+ 4 (* 2 size-x size-y)))
-        {:size-x size-x
-         :size-y size-y}
-        (throw (Exception. "Invalid blurhash length"))))))
-
-(s/fdef decode-components
-  :args :blurhash.core/blurhash
-  :ret (s/map-of #{:size-x :size-y} int?))
+  (let [size-info (base83/decode (str (first blurhash)))
+        size-x (inc (int (/ size-info 9)))
+        size-y (inc (mod size-info 9))]
+    (if (= (count blurhash)
+           (+ 4 (* 2 size-x size-y)))
+      {:size-x size-x
+       :size-y size-y}
+      (throw (Exception. "Invalid blurhash length")))))
 
 (defn get-real-maxval [blurhash punch]
   (let [quant-max-val (base83/decode (str (second blurhash)))]
@@ -55,7 +48,7 @@
                                color (nth colors (+ i (* j size-x)))]]
                      (mapv (partial * basis) color)))]
     (if-not linear
-      (mapv linear->srgb res)
+      (mapv util/linear->srgb res)
       res)))
 
 (defn decode [blurhash w h & [punch linear]]

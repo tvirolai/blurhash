@@ -1,5 +1,5 @@
 (ns blurhash.encode
-  (:require [blurhash.core :as bh]))
+  (:require [blurhash.util :as util]))
 
 (defn ->basis [x y i j width height norm-factor]
   (* norm-factor
@@ -31,7 +31,7 @@
    (let [height (count image)
          width (count (first image))
          image-linear (if-not linear
-                        (mapv (fn [row] (mapv bh/srgb->linear row)) image)
+                        (mapv (fn [row] (mapv util/srgb->linear row)) image)
                         image)
          components (encode-components comp-x comp-y height width image-linear)
          ])))
