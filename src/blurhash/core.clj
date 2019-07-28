@@ -11,9 +11,9 @@
         width (.getWidth image)]
     (map vec
          (partition width
-                    (for [x (range width)
-                          y (range (.getHeight image))
-                          :let [rgb (.getRGB image x y)
+                    (for [row-index (range (.getHeight image))
+                          column-index (range width)
+                          :let [rgb (.getRGB image column-index row-index)
                                 rgb-object (new Color rgb)]]
                       (vector (.getRed rgb-object)
                               (.getGreen rgb-object)
@@ -30,5 +30,5 @@
               color (.getRGB (new Color r g b))]
           (.setRGB output-image column-index row-index (.intValue color))))
       output-image)
-    "png"
+    "jpg"
     (new File filename)))

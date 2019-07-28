@@ -1,4 +1,5 @@
 /target
+.eastwood
 /classes
 /checkouts
 profiles.clj

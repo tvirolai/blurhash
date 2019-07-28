@@ -7,9 +7,9 @@
   "UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn")
 
 (deftest decode-test
-  (let [pic (decode test-hash 300 263)]
+  (let [pic (decode test-hash 300 236)]
     (testing "Dimensions are right"
-      (is (= 263 (count pic)))
+      (is (= 236 (count pic)))
       (is (= 300 (count (first pic)))))
     (testing "Content is right"
       (is (= [158 169 150] (first (first pic)))))))
