@@ -7,4 +7,8 @@
                  [net.mikera/core.matrix "0.62.0"]]
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]}
   :plugins [[jonase/eastwood "0.3.5"]]
+  :deploy-repositories [["releases" {:url "https://clojars.org/repo"
+                                     :username :env
+                                     :password :env
+                                     :sign-releases false}]]
   :repl-options {:init-ns blurhash.core})

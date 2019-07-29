@@ -1,5 +1,7 @@
 (ns blurhash.core
-  (:require [clojure.java.io :as io])
+  (:require [blurhash.encode :as encode]
+            [blurhash.decode :as decode]
+            [clojure.java.io :as io])
   (:import (java.awt.image BufferedImage)
            (java.io File)
            (java.awt Color)
@@ -31,3 +33,8 @@
       output-image)
     "jpg"
     (new File filename)))
+
+(defn encode-file [path]
+  (-> path
+      file->pixels
+      encode/encode))

@@ -1,22 +1,15 @@
-# blurhash
+# Blurhash
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure implementation of [Blurhash](https://blurha.sh/).
+
+Blurhash is an algorithm by [Dag Ågren](https://github.com/DagAgren) of [Wolt](https://wolt.com) that decodes an image to a very compact (~ 20-30 bytes) ASCII string representation, which can be then decoded into a blurred placeholder image. See the [main repo](https://github.com/woltapp/blurhash) for the rationale and details. 
 
 ## Usage
 
-FIXME
+The encode->hash->decode cycle looks something like this:
 
-## License
+<img src="resources/example.jpg"> -> `UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn` -> <img src="resources/example-blurred.jpg">
 
-Copyright © 2019 FIXME
+The Clojure implementation is written in CLJC files, so that they can be used from Clojure and ClojureScript code alike.
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+TODO: examples...

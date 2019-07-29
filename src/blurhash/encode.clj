@@ -27,8 +27,8 @@
 
 (defn encode-dc [component]
   (let [[r g b] (map util/linear->srgb component)]
-    (+ (bit-shift-right r 16)
-       (bit-shift-right g 8)
+    (+ (bit-shift-left r 16)
+       (bit-shift-left g 8)
        g)))
 
 (defn encode-ac-values [components ac-component-norm-factor]
@@ -48,7 +48,6 @@
         (+ (* r 19 19)
            (* g 19)
            b)))
-
 
 (defn encode
   ([image]
@@ -71,7 +70,7 @@
                                      (Math/floor (- (* max-ac-comp 166) 0.5))))
          ac-component-norm-factor (/ (float (inc quant-max-ac-comp)) 166.0)
          ac-values (encode-ac-values components ac-component-norm-factor)]
-     (str (base83/encode (* (+ (dec comp-x) (dec comp-y)) 9) 1)
+     (str (base83/encode (+ (dec comp-x) (* 9 (dec comp-y))) 1)
           (base83/encode quant-max-ac-comp 1)
           (base83/encode dc-value 4)
           (s/join

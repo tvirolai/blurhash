@@ -1,0 +1,62 @@
+version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/clojure:lein-2.7.1
+  working_directory: ~/repo
+
+jobs:
+  build:
+    <<: *defaults
+    environment:
+      LEIN_ROOT: "true"
+      JVM_OPTS: -Xmx1g
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - 'v1-clj-{{ checksum "project.clj" }}'
+            - 'v1-clj-'
+            - 'v1-test-'
+      - run:
+          name: Run tests
+          command: lein test
+      - run:
+          name: Check for unused imports / dead code
+          command: lein analyze
+      - save_cache:
+          key: 'v1-clj-{{ checksum "project.clj" }}'
+          paths:
+            - ~/.m2
+            - ~/.cljs/.aot_cache
+      - persist_to_workspace:
+          root: .
+          paths: .
+  deploy:
+    <<: *defaults
+    requires:
+      - build
+    filters:
+      branches:
+        only: /master/
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: lein deploy
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^v.*/
