@@ -21,9 +21,6 @@ jobs:
       - run:
           name: Run tests
           command: lein test
-      - run:
-          name: Check for unused imports / dead code
-          command: lein analyze
       - save_cache:
           key: 'v1-clj-{{ checksum "project.clj" }}'
           paths:
