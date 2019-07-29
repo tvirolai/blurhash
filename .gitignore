@@ -1,5 +1,4 @@
 /target
-.eastwood
 /classes
 /checkouts
 profiles.clj
@@ -11,3 +10,4 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+.eastwood
