@@ -16,4 +16,37 @@ The encode->hash->decode cycle looks something like this:
 
 The Clojure implementation is written in CLJC files, so that they can be used from Clojure and ClojureScript code alike.
 
-TODO: examples...
+### Encoding
+
+You can encode an image to a blurhash using the function `blurhash.encode/encode`. It takes an image as an RGB matrix, currently represented as nested native vectors. The `blurhash.core` namespace contains (Clojure-speficic) functions to convert an image file into a matrix, so you can do something like this:
+
+```clojure
+(ns my-namespace
+  (:require [blurhash.core :refer [file->pixels]
+            [blurhash.encode :as encode]]))
+(def image
+  (file->pixels "./resources/example.jpg"))
+
+(encode image)
+=> "UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn"
+```
+
+### Decoding
+
+Here's an example of how to decode a blurhash into a placeholder image:
+
+```clojure
+(ns my-namespace
+  (:require [blurhash.core :refer [write-matrix-to-image]
+            [blurhash.decode :as decode]]))
+
+(def blurred-image
+  (decode "UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn" 300 236))
+
+(write-matrix-to-image blurred-image "blurred-image.jpg")
+
+```
+
+# TODO
+
+Publish in Clojars.
