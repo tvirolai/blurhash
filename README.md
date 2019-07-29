@@ -8,11 +8,10 @@ Blurhash is an algorithm by [Dag Ågren](https://github.com/DagAgren) of [Wolt](
 
 The encode->hash->decode cycle looks something like this:
 
-<img src="resources/example.jpg">
-->
-`UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn`
-->
-<img src="resources/example-blurred.jpg">
+![a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example.jpg)
+
+→ `UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn` →
+![essence of a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example-blurred.jpg)
 
 The Clojure implementation is written in CLJC files, so that they can be used from Clojure and ClojureScript code alike.
 
