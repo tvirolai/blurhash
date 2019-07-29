@@ -1,4 +1,4 @@
-(defproject blurhash "0.1.0-SNAPSHOT"
+(defproject blurhash "0.1.0"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/siili-core/blurhash"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
