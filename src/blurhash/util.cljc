@@ -29,3 +29,6 @@
   [v exp]
   (* (if (neg? v) -1 1)
      (Math/pow (Math/abs v) exp)))
+
+(defmacro forv [& body]
+  `(vec (for ~@body)))

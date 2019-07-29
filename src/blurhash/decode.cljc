@@ -54,7 +54,6 @@
         dc-val (base83/decode (subs blurhash 2 6))
         colors (get-colors blurhash size-x size-y (get-real-maxval blurhash punch))]
     (for [y (range h)]
-      (vec
-        (for [x (range w)
+        (util/forv [x (range w)
               :let [pixel (decode-pixel x y size-x size-y colors w h linear)]]
-          pixel)))))
+          pixel))))
