@@ -17,7 +17,7 @@ The Clojure implementation is written in CLJC files, so that they can be used fr
 
 ### Encoding
 
-You can encode an image to a blurhash using the function `blurhash.encode/encode`. It takes an image as an RGB matrix, currently represented as nested native vectors. The `blurhash.core` namespace contains (Clojure-spefic) functions to convert an image file into a matrix, so you can do something like this:
+You can encode an image to a blurhash using the function `blurhash.encode/encode`. It takes an image as an RGB matrix, currently represented as nested native vectors. The `blurhash.core` namespace contains (Clojure-specific) functions to convert an image file into a matrix, so you can do something like this:
 
 ```clojure
 (ns my-namespace
