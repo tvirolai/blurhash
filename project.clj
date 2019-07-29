@@ -7,7 +7,7 @@
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]}
   :plugins [[jonase/eastwood "0.3.5"]]
   :deploy-repositories [["releases" {:url "https://clojars.org/repo"
-                                     :username :env
-                                     :password :env
+                                     :username ~(System/getenv "CLOJARS_USER")
+                                     :password ~(System/getenv "CLOJARS_PASS")
                                      :sign-releases false}]]
   :repl-options {:init-ns blurhash.core})
