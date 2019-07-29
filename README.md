@@ -11,6 +11,7 @@ The encode->hash->decode cycle looks something like this:
 ![a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example.jpg)
 
 → `UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn` →
+
 ![essence of a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example-blurred.jpg)
 
 The Clojure implementation is written in CLJC files, so that they can be used from Clojure and ClojureScript code alike.
