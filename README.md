@@ -49,3 +49,7 @@ Here's an example of how to decode a blurhash into a placeholder image:
 # TODO
 
 Publish in Clojars.
+
+
+# License
+Released under the MIT license.

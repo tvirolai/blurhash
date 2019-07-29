@@ -1,8 +1,8 @@
-(defproject siili/blurhash "0.0.1"
+(defproject siili-core/blurhash "0.0.1"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/siili-core/blurhash"
-  :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
-            :url "https://www.eclipse.org/legal/epl-2.0/"}
+  :license {:name "MIT Licence"
+            :url "https://github.com/siili-core/blurhash/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "1.10.0"]]
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]}
   :plugins [[jonase/eastwood "0.3.5"]]
