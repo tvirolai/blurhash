@@ -16,10 +16,6 @@
      (* maxvalue (util/sign-pow (/ (- (float (mod (int (/ ac-component 19)) 19)) 9.0) 9.0) 2.0))
      (* maxvalue (util/sign-pow (/ (- (mod ac-component 19) 9.0) 9.0) 2.0))]))
 
-(defn ->basis [x y i j width height]
-  (* (Math/cos (/ (* Math/PI x i) width))
-     (Math/cos (/ (* Math/PI y j) height))))
-
 (defn decode-components [blurhash]
   (let [size-info (base83/decode (str (first blurhash)))
         size-x (inc (int (/ size-info 9)))
@@ -44,7 +40,7 @@
   (let [res (apply mapv +
                    (for [j (range size-y)
                          i (range size-x)
-                         :let [basis (->basis x y i j width height)
+                         :let [basis (util/->basis x y i j width height)
                                color (nth colors (+ i (* j size-x)))]]
                      (mapv (partial * basis) color)))]
     (if-not linear

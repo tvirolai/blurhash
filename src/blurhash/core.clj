@@ -5,7 +5,6 @@
            (java.awt Color)
            (javax.imageio ImageIO)))
 
-; Something wrong with this still.
 (defn file->pixels [path]
   (let [image (-> path io/file ImageIO/read)
         width (.getWidth image)]

@@ -1,16 +1,11 @@
 (ns blurhash.encode
   (:require [blurhash.util :as util]))
 
-(defn ->basis [x y i j width height norm-factor]
-  (* norm-factor
-     (Math/cos (/ (* Math/PI x i) width))
-     (Math/cos (/ (* Math/PI y j) height))))
-
 (defn encode-component [i j height width norm-factor image-linear]
   (let [comp-data (for [y (range height)
                         x (range width)
-                        :let [basis (->basis x y i j width height norm-factor)]]
-                    (mapv (partial * basis) (nth (nth image-linear x) y)))]
+                        :let [basis (util/->basis x y i j width height norm-factor)]]
+                    (mapv (partial * basis) (nth (nth image-linear y) x)))]
     (->> comp-data
          (apply map +)
          (mapv #(/ % (* height width))))))
@@ -24,6 +19,11 @@
                               2.0)]]
       (encode-component i j height width norm-factor image-linear))))
 
+(defn convert-to-linear [image]
+  (vec (for [row image]
+         (vec (for [pix row]
+                (mapv util/srgb->linear pix))))))
+
 (defn encode
   ([image]
    (encode image 4 4 false))
@@ -31,7 +31,8 @@
    (let [height (count image)
          width (count (first image))
          image-linear (if-not linear
-                        (mapv (fn [row] (mapv util/srgb->linear row)) image)
+                        (convert-to-linear image)
                         image)
          components (encode-components comp-x comp-y height width image-linear)
-         ])))
+         ]
+     components)))

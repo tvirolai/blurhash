@@ -1,5 +1,10 @@
 (ns blurhash.util)
 
+(defn ->basis [x y i j width height & [norm-factor]]
+  (* (or norm-factor 1.0)
+     (Math/cos (/ (* Math/PI x i) width))
+     (Math/cos (/ (* Math/PI y j) height))))
+
 (defn srgb->linear
   "Linear floating point 0.0-1.0 -> srgb integer (0-255)"
   [value]
