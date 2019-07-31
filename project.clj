@@ -7,7 +7,14 @@
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]}
   :plugins [[jonase/eastwood "0.3.5"]]
   :deploy-repositories [["releases" {:url "https://clojars.org/repo"
-                                     :username :env/clojars_user
-                                     :password :env/clojars_pass
+                                     :username :env
+                                     :password :env
                                      :sign-releases false}]]
+  :release-tasks [["vcs" "assert-committed"]
+                  ["change" "version" "leiningen.release/bump-version" "release"]
+                  ["vcs" "commit"]
+                  ["vcs" "tag" "v" "--no-sign"]
+                  ["deploy"]
+                  ["change" "version" "leiningen.release/bump-version"]
+                  ["vcs" "commit"]]
   :repl-options {:init-ns blurhash.core})
