@@ -39,7 +39,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
-      - run: lein deploy releases
+      - run: lein deploy
 
 workflows:
   version: 2
