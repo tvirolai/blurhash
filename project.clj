@@ -1,7 +1,7 @@
 (defproject siili-core/blurhash "0.0.1"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/siili-core/blurhash"
-  :license {:name "MIT Licence"
+  :license {:name "MIT License"
             :url "https://github.com/siili-core/blurhash/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "1.10.0"]]
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]}
