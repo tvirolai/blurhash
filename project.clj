@@ -1,4 +1,4 @@
-(defproject blurhash "0.0.1"
+(defproject siili-core/blurhash "0.0.1"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/siili-core/blurhash"
   :license {:name "MIT Licence"
@@ -7,10 +7,10 @@
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]}
   :plugins [[jonase/eastwood "0.3.5"]]
   :jvm-opts ["-Dclojure.server.repl={:port 5555 :accept clojure.core.server/repl}"] ; notice that the map is not quoted.
-  :deploy-repositories {"releases" {:url "https://repo.clojars.org"
-                                    :username :env/clojars_user
-                                    :password :env/clojars_pass
-                                    :sign-releases false}}
+  :deploy-repositories [["clojars" {:url "https://clojars.org/repo"
+                                  :username :env/clojars_username
+                                  :password :env/clojars_password
+                                  :sign-releases false}]]
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
