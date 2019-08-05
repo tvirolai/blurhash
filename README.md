@@ -28,7 +28,7 @@ You can encode an image to a blurhash using the function `blurhash.encode/encode
   (file->pixels "./resources/example.jpg"))
 
 (encode image)
-=> "UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn"
+=> "UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn"
 ```
 
 ### Decoding
@@ -41,7 +41,7 @@ Here's an example of how to decode a blurhash into a placeholder image:
             [blurhash.decode :refer [decode]]]))
 
 (def blurred-image
-  (decode "UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn" 300 236))
+  (decode "UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn" 300 236))
 
 (pixels->file blurred-image "blurred-image.jpg")
 
