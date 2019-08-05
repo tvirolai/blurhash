@@ -33,8 +33,3 @@
       output-image)
     "jpg"
     (new File filename)))
-
-(defn encode-file [path]
-  (-> path
-      file->pixels
-      encode/encode))

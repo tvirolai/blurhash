@@ -6,10 +6,11 @@
   :dependencies [[org.clojure/clojure "1.10.0"]]
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]}
   :plugins [[jonase/eastwood "0.3.5"]]
-  :deploy-repositories [["releases" {:url "https://clojars.org/repo"
-                                     :username :env
-                                     :password :env
-                                     :sign-releases false}]]
+  :jvm-opts ["-Dclojure.server.repl={:port 5555 :accept clojure.core.server/repl}"] ; notice that the map is not quoted.
+  :deploy-repositories {"releases" {:url "https://repo.clojars.org"
+                                    :username :env/clojars_user
+                                    :password :env/clojars_pass
+                                    :sign-releases false}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
