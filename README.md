@@ -10,7 +10,7 @@ The encode->hash->decode cycle looks something like this:
 
 ![a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example.jpg)
 
-→ `UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn` →
+→ `UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn` →
 
 ![essence of a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example-blurred.jpg)
 
@@ -37,13 +37,13 @@ Here's an example of how to decode a blurhash into a placeholder image:
 
 ```clojure
 (ns my-namespace
-  (:require [blurhash.core :refer [write-matrix-to-image]
+  (:require [blurhash.core :refer [pixels->file]
             [blurhash.decode :refer [decode]]]))
 
 (def blurred-image
   (decode "UIGuXhS@x[xX_MORbuoy?uNGM{nTNHMzIVnn" 300 236))
 
-(write-matrix-to-image blurred-image "blurred-image.jpg")
+(pixels->file blurred-image "blurred-image.jpg")
 
 ```
 

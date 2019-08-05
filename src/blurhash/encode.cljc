@@ -2,6 +2,7 @@
   (:require
     #?(:cljs [blurhash.util :as util :refer-macros true]
        :clj  [blurhash.util :as util])
+    [blurhash.util :as util]
     [blurhash.base83 :as base83]
     [clojure.string :as s]))
 
@@ -31,29 +32,34 @@
   (let [[r g b] (map util/linear->srgb component)]
     (+ (bit-shift-left r 16)
        (bit-shift-left g 8)
-       g)))
+       b)))
 
 (defn encode-ac-values [components ac-component-norm-factor]
   (for [c (rest components)
-        :let [[r g b] (map (fn [element]
-                             (let [value (Math/floor
-                                           (+ (* (util/sign-pow
-                                                   (/ element ac-component-norm-factor)
-                                                   0.5)
-                                                 9.0)
-                                              9.5))]
-                               (->> value
-                                    (min 18.0)
-                                    (max 0.0)
-                                    int)))
+        :let [[r g b] (map #(-> %
+                                (/ ac-component-norm-factor)
+                                (util/sign-pow 0.5)
+                                (* 9.0)
+                                (+ 9.5)
+                                Math/floor
+                                (min 18.0)
+                                (max 0.0)
+                                int)
                            c)]]
-        (+ (* r 19 19)
-           (* g 19)
-           b)))
+    (+ (* r 19 19)
+       (* g 19)
+       b)))
 
 (defn encode
+  "Encode the pixel matrix into a blurhash.
+  Optional args:
+    comp-x and comp-y - x and y component counts. Defaults to 4 for both.
+    linear - whether the image is encoded in linear format (0.0-1.0 floating point
+    values). Defaults to false."
   ([image]
    (encode image 4 4 false))
+  ([image comp-x comp-y]
+   (encode image comp-x comp-y false))
   ([image comp-x comp-y linear]
    (let [height (count image)
          width (count (first image))

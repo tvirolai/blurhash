@@ -14,9 +14,15 @@
 	(let [ac-component (base83/decode (subs blurhash
                                           (+ 4 (* 2 value))
                                           (+ 4 (* 2 (inc value)))))]
-    [(* maxvalue (util/sign-pow (/ (- (int (/ ac-component (* 19 19))) 9.0) 9.0) 2.0))
-     (* maxvalue (util/sign-pow (/ (- (float (mod (int (/ ac-component 19)) 19)) 9.0) 9.0) 2.0))
-     (* maxvalue (util/sign-pow (/ (- (mod ac-component 19) 9.0) 9.0) 2.0))]))
+    (mapv (fn [v]
+            (-> v
+                (- 9.0)
+                (/ 9.0)
+                (util/sign-pow 2.0)
+                (* maxvalue)))
+          (list (int (/ ac-component (* 19 19)))
+                (float (mod (int (/ ac-component 19)) 19))
+                (mod ac-component 19)))))
 
 (defn decode-components [blurhash]
   (let [size-info (base83/decode (str (first blurhash)))
@@ -38,7 +44,9 @@
              (decode-ac blurhash value max-val))]
     (conj ac dc)))
 
-(defn decode-pixel [x y size-x size-y colors width height linear]
+(defn- decode-pixel
+  "A helper function that decodes a single pixel."
+  [x y size-x size-y colors width height linear]
   (let [res (apply mapv +
                    (for [j (range size-y)
                          i (range size-x)
@@ -49,11 +57,18 @@
       (mapv util/linear->srgb res)
       res)))
 
-(defn decode [blurhash w h & [punch linear]]
+(defn decode
+  "The function takes a blurhash, along with some parameters, and returns an
+  image as a pixel matrix. Along with the blurhash string, you need to provide
+  width and height (w, h) values of the image you want to decode.
+
+  The optional `punch` tunes the contrast of the image.
+  If you want the image to be decoded into a matrix of linear floating-point
+  values, set the `linear` parameter to `true`."
+  [blurhash w h & [punch linear]]
   (let [punch (or punch 1.0)
         linear (or linear false)
         {:keys [size-x size-y]} (decode-components blurhash)
-        dc-val (base83/decode (subs blurhash 2 6))
         colors (get-colors blurhash size-x size-y (get-real-maxval blurhash punch))]
     (for [y (range h)]
         (util/forv [x (range w)]

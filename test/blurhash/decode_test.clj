@@ -11,7 +11,7 @@
     (testing "Dimensions are right"
       (is (= 236 (count pic)))
       (is (= 300 (count (first pic)))))
-    (testing "Content is right"
+    (testing "Content looks right"
       (is (= [158 169 150] (first (first pic)))))))
 
 (deftest helper-tests
@@ -32,3 +32,5 @@
              (decode-ac test-hash 1 real-max-val)))
       (is (= [0.022608954335861964, 0.035326491149784325, 0.022608954335861964]
              (decode-ac test-hash 2 real-max-val))))))
+
+(run-tests)

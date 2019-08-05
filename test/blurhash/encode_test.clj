@@ -8,3 +8,9 @@
 
 (def example-file-path
   "./resources/example.jpg")
+
+(deftest encode-image
+  (testing "The generated hash matches one created by another implementation"
+    (is (= test-hash (->> example-file-path bh/file->pixels encode)))))
+
+(run-tests)
