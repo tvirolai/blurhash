@@ -11,7 +11,7 @@
 (defn encode [value len]
   (->> (range)
        rest
-       (map-indexed (fn [idx itm]
+       (map-indexed (fn [idx _]
                       (let [div (Math/pow 83 (- len (inc idx)))
                             digit (mod (Math/floor (/ value div)) 83)]
                         (nth alphabet digit))))
