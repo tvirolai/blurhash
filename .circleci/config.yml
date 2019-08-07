@@ -55,5 +55,5 @@ workflows:
           filters:
             branches:
               only: master
-            # tags:
-            #   only: /^v.*/
+            tags:
+              only: /^v.*/
