@@ -48,9 +48,9 @@ jobs:
       - run:
           name: Run Node tests
           command: lein test-node once
-      - run:
-          name: Run advanced tests
-          command: lein test-advanced once
+      # - run:
+      #     name: Run advanced tests
+      #     command: lein test-advanced once
       - store_test_results:
           path: ~/test/target/results
       - save_cache:

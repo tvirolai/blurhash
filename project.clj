@@ -45,8 +45,6 @@
                                    :output-dir "target/advanced_out"
                                    :main blurhash.runner
                                    :optimizations :advanced}}
-                       ;; Node.js requires :target :nodejs, hence the separate
-                       ;; build configuration.
                        {:id "node-test"
                         :source-paths ["src" "test/cljc" "test/cljs"]
                         :compiler {:output-to "target/node_out/test.js"
