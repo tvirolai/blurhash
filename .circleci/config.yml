@@ -47,7 +47,7 @@ jobs:
           command: lein test-browser once
       - run:
           name: Run Node tests
-          commdand: lein test-node once
+          command: lein test-node once
       - run:
           name: Run advanced tests
           command: lein test-advanced once
