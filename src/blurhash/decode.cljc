@@ -1,7 +1,7 @@
 (ns blurhash.decode
+  #?(:cljs (:require-macros [blurhash.util :as util]))
   (:require
-    #?(:cljs [blurhash.util :as util :refer-macros true]
-       :clj  [blurhash.util :as util])
+    [blurhash.util :as util]
     [blurhash.base83 :as base83]))
 
 (defn decode-dc [value]

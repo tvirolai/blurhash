@@ -1,5 +1,5 @@
 (ns blurhash.base83-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.test :refer [deftest testing is]]
             [blurhash.base83 :as base83]))
 
 (deftest decoding
@@ -13,5 +13,3 @@
       (is (= h (-> h
                    base83/decode
                    (base83/encode (count h))))))))
-
-(run-tests)

@@ -29,17 +29,35 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: .
-  deploy:
-    <<: *defaults
-    requires:
-      - build
-    filters:
-      branches:
-        only: /master/
+  test-cljs:
+    working_directory: ~/test
+    docker:
+      - image: circleci/clojure:lein-2.8.1-node-browsers
     steps:
-      - attach_workspace:
-          at: ~/repo
-      - run: lein deploy clojars
+      - checkout
+      - restore_cache:
+          keys:
+            - 'v1-cljs-{{ checksum "project.clj" }}-{{ checksum "package.json" }}'
+            - 'v1-cljs-'
+      - run:
+          name: Install npm dependencies
+          command: npm install
+      - run:
+          name: Run browser tests
+          command: lein test-browser once
+      - run:
+          name: Run Node tests
+          command: lein test-node once
+      # - run:
+      #     name: Run advanced tests
+      #     command: lein test-advanced once
+      - store_test_results:
+          path: ~/test/target/results
+      - save_cache:
+          key: 'v1-cljs-{{ checksum "project.clj" }}-{{ checksum "package.json" }}'
+          paths:
+            - ~/.m2
+            - ~/test/node_modules
 
 workflows:
   version: 2
@@ -49,9 +67,13 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - test-cljs:
+          requires:
+            - build
       - deploy:
           requires:
             - build
+            - test-cljs
           filters:
             branches:
               only: master
