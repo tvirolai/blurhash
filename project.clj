@@ -1,11 +1,13 @@
-(defproject siili-core/blurhash "0.0.2"
+(defproject siili-core/blurhash "0.0.3"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/siili-core/blurhash"
   :license {:name "MIT License"
             :url "https://github.com/siili-core/blurhash/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "1.10.0"]
-                 [org.clojure/core.rrb-vector "0.0.14"]
-                 [org.clojure/clojurescript "1.10.520"]]
+                 [org.clojure/clojurescript "1.10.520"]
+                 ;; This version of rrb-vector needs to be required for now, otherwise cljsbuild will fail.
+                 ;; See the issue CRRBV-19.
+                 [org.clojure/core.rrb-vector "0.0.14"]]
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]
             "test-browser" ["doo" "chrome-headless" "test"]
             "test-advanced" ["doo" "chrome-headless" "advanced-test"]
