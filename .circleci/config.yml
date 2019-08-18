@@ -43,11 +43,8 @@ jobs:
           name: Install npm dependencies
           command: npm install
       - run:
-          name: Run browser tests
-          command: lein test-browser once
-      - run:
-          name: Run Node tests
-          command: lein test-node once
+          name: Run cljs tests
+          command: lein do test-browser once, test-node once
       # - run:
       #     name: Run advanced tests
       #     command: lein test-advanced once
@@ -58,6 +55,17 @@ jobs:
           paths:
             - ~/.m2
             - ~/test/node_modules
+  deploy:
+    <<: *defaults
+    requires:
+      - build
+    filters:
+      branches:
+        only: /master/
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run: lein deploy clojars
 
 workflows:
   version: 2
