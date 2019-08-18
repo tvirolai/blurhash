@@ -2,6 +2,7 @@
 /classes
 /.lsp
 /checkouts
+node_modules/
 profiles.clj
 pom.xml
 pom.xml.asc
