@@ -22,3 +22,9 @@
   (testing "The forv macro works should work in all environments"
     (is (= (vec (for [i (range 5)] i))
            (util/forv [i (range 5)] i)))))
+
+#?(:cljs
+   (deftest uint8-conversion
+     (testing "Conversion to Uint8ClampedArray format in CLJS"
+       (is (= (.reduce (new js/Uint8ClampedArray [125 244 421 255]) +)
+              (.reduce (js->clj (util/->Uint8ClampedArray (list [[125 244 421]]))) +))))))

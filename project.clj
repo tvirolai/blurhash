@@ -1,4 +1,4 @@
-(defproject siili-core/blurhash "0.0.4"
+(defproject siili-core/blurhash "0.0.5"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/siili-core/blurhash"
   :license {:name "MIT License"
