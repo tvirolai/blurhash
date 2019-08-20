@@ -11,6 +11,8 @@ Blurhash is an algorithm by [Dag Ågren](https://github.com/DagAgren) of [Wolt](
 
 [![Clojars Project](https://img.shields.io/clojars/v/siili-core/blurhash.svg)](https://clojars.org/siili-core/blurhash)
 
+Both the encoder and decoder are implemented and work in both Clojure and ClojureScript. They will be optimized a lot in the near future, however. The API may change.
+
 ## Usage
 
 The encode->hash->decode cycle looks something like this:
@@ -53,6 +55,52 @@ Here's an example of how to decode a blurhash into a placeholder image:
 (pixels->file blurred-image "blurred-image.jpg")
 
 ```
+
+In ClojureScript (Reagent), you can decode a hash and render the placeholder like this:
+
+```clojure
+(ns blurhash-example.core
+  (:require [reagent.core :as r]
+            [blurhash.decode :refer [decode]
+            [blurhash.util :as util]]))
+
+(defn draw-canvas-contents [canvas]
+  (let [pixels (util/->Uint8ClampedArray
+                 (decode "LEHV6nWB2yk8pyo0adR*.7kCMdnj" 100 100))
+        ctx (.getContext canvas "2d")
+        imageData (.createImageData ctx 100 100)]
+    (do
+      (.set (. imageData -data) pixels)
+      (. ctx putImageData imageData 0 0))))
+
+(defn div-with-canvas []
+  (let [dom-node (r/atom nil)]
+    (r/create-class
+      {:component-did-update
+       (fn [_]
+         (draw-canvas-contents (.-firstChild @dom-node)))
+       :component-did-mount
+       (fn [this]
+         (reset! dom-node (r/dom-node this)))
+       :reagent-render
+       (fn []
+         [:div
+          [:canvas (if-let [node @dom-node]
+                     {:width (.-clientWidth node)
+                      :height (.-clientHeight node)})]])})))
+
+(defn home-page []
+  [:div [:h2 "Look at this blur!"]
+   [div-with-canvas]])
+
+(defn mount-root []
+  (r/render [home-page] (.getElementById js/document "app")))
+
+(defn init! []
+  (mount-root))
+
+```
+
 # MIT License
 
 Copyright (c) 2019 .core
