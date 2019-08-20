@@ -32,3 +32,14 @@
 
 (defmacro forv [& body]
   `(vec (for ~@body)))
+
+#?(:cljs
+   (defn ->Uint8ClampedArray [pixels]
+     "This is of course terribly slow. Optimization of the data structures
+     is a priority."
+     (->> v
+          (map #(for [pixel %]
+                  (conj pixel 255)))
+          (reduce #(into %1 (flatten %2)) [])
+          (new js/Uint8ClampedArray))))
+

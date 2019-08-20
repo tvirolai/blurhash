@@ -1,10 +1,10 @@
 (ns blurhash.encode
-  #?(:cljs (:require-macros [blurhash.util :as util]))
   (:require
     [blurhash.util :as util]
     [blurhash.util :as util]
     [blurhash.base83 :as base83]
-    [clojure.string :as s]))
+    [clojure.string :as s])
+  #?(:cljs (:require-macros [blurhash.util :as util])))
 
 (defn encode-component [i j height width norm-factor image-linear]
   (let [comp-data (for [y (range height)
