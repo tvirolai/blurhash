@@ -71,5 +71,5 @@
         {:keys [size-x size-y]} (decode-components blurhash)
         colors (get-colors blurhash size-x size-y (get-real-maxval blurhash punch))]
     (for [y (range h)]
-        (util/forv [x (range w)]
-          (decode-pixel x y size-x size-y colors w h linear)))))
+      (for [x (range w)]
+        (decode-pixel x y size-x size-y colors w h linear)))))
