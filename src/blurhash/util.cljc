@@ -26,7 +26,7 @@
 
 (defn sign-pow
   "Sign-preserving exponentiation."
-  [v exp]
+  [^Double v exp]
   (* (if (neg? v) -1 1)
      (Math/pow (Math/abs v) exp)))
 
