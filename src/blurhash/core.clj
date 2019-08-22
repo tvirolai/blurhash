@@ -1,5 +1,6 @@
 (ns blurhash.core
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io]
+            [blurhash.decode :refer [decode]])
   (:import (java.awt.image BufferedImage)
            (java.io File)
            (java.awt Color)
@@ -17,6 +18,7 @@
                       (vector (.getRed rgb-object)
                               (.getGreen rgb-object)
                               (.getBlue rgb-object)))))))
+
 
 (defn pixels->file [pixels ^String filename]
   (let [height (count pixels)
