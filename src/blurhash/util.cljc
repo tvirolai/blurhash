@@ -26,7 +26,7 @@
 
 (defn sign-pow
   "Sign-preserving exponentiation."
-  [v exp]
+  [^Double v exp]
   (* (if (neg? v) -1 1)
      (Math/pow (Math/abs v) exp)))
 
@@ -35,10 +35,14 @@
 
 #?(:cljs
    (defn ->Uint8ClampedArray [pixels]
-     "This is of course terribly slow. Optimization of the data structures
+     "This is of course slow. Optimization of the data structures
      is a priority."
      (->> pixels
           (map #(for [pixel %]
                   (conj pixel 255)))
           (reduce #(into %1 (flatten %2)) [])
           (new js/Uint8ClampedArray))))
+
+#?(:cljs
+   (defn Uint8ClampedArray->vec [uint8]
+     (vec (.from js/Array uint8))))

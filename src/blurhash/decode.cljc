@@ -1,8 +1,7 @@
 (ns blurhash.decode
-  #?(:cljs (:require-macros [blurhash.util :as util]))
-  (:require
-    [blurhash.util :as util]
-    [blurhash.base83 :as base83]))
+  (:require [blurhash.util :as util]
+            [blurhash.base83 :as base83])
+  #?(:cljs (:require-macros [blurhash.util :as util])))
 
 (defn decode-dc [value]
   (mapv util/srgb->linear
@@ -64,12 +63,32 @@
 
   The optional `punch` tunes the contrast of the image.
   If you want the image to be decoded into a matrix of linear floating-point
-  values, set the `linear` parameter to `true`."
+  values, set the `linear` parameter to `true`.
+
+  In Clojure, this function returns a picture represented as nested vectors.
+  In ClojureScipt, it is returned as an Uint8ClampedArray that can be rendered
+  into HTML canvas."
   [blurhash w h & [punch linear]]
   (let [punch (or punch 1.0)
         linear (or linear false)
         {:keys [size-x size-y]} (decode-components blurhash)
         colors (get-colors blurhash size-x size-y (get-real-maxval blurhash punch))]
-    (for [y (range h)]
-        (util/forv [x (range w)]
-          (decode-pixel x y size-x size-y colors w h linear)))))
+    #?(:clj
+       (for [y (range h)]
+         (for [x (range w)]
+           (decode-pixel x y size-x size-y colors w h linear))))
+    #?(:cljs
+       (let [se (for [y (range h)
+                      x (range w)]
+                  (decode-pixel x y size-x size-y colors w h linear))]
+         (->> se
+              (reduce (fn [col itm]
+                        (loop [c col
+                               i itm]
+                          (if (empty? i)
+                            (conj! c 255)
+                            (recur (conj! c (first i))
+                                   (rest i)))))
+                      (transient []))
+              persistent!
+              (new js/Uint8ClampedArray))))))

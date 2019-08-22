@@ -70,7 +70,7 @@
          max-ac-comp (->> components
                           rest
                           flatten
-                          (map #(Math/abs %))
+                          (map #(Math/abs ^Double %))
                           (apply max))
          dc-value (encode-dc (first components))
          quant-max-ac-comp (max 0

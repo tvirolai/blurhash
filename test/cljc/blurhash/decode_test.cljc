@@ -1,5 +1,6 @@
 (ns blurhash.decode-test
   (:require [blurhash.decode :as d]
+            [blurhash.util :as util]
             [clojure.string :refer [join]]
             [clojure.test :refer [deftest testing is]]))
 
@@ -7,12 +8,19 @@
   "UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn")
 
 (deftest decode-test
-  (let [pic (d/decode test-hash 300 236)]
-    (testing "Dimensions are right"
-      (is (= 236 (count pic)))
-      (is (= 300 (count (first pic)))))
-    (testing "Content looks right"
-      (is (= [158 169 150] (first (first pic)))))))
+  #?(:clj
+     (let [pic (d/decode test-hash 300 236)]
+       (testing "Dimensions are right"
+         (is (= 236 (count pic)))
+         (is (= 300 (count (first pic)))))
+       (testing "Content looks right"
+         (is (= [158 169 150] (first (first pic))))))))
+  #?(:cljs
+     (testing "Dimensions look right"
+       (is (= (* 236 300 4) (-> test-hash
+                                (d/decode 300 236)
+                                util/Uint8ClampedArray->vec
+                                count)))))
 
 (deftest helper-tests
   (let [real-max-val (d/get-real-maxval test-hash 1.0)]
