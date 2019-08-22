@@ -1,6 +1,5 @@
 (ns blurhash.core
-  (:require [clojure.java.io :as io]
-            [blurhash.decode :refer [decode]])
+  (:require [clojure.java.io :as io])
   (:import (java.awt.image BufferedImage)
            (java.io File)
            (java.awt Color)
