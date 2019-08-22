@@ -65,8 +65,7 @@ In ClojureScript (Reagent), you can decode a hash and render the placeholder lik
             [blurhash.util :as util]]))
 
 (defn draw-canvas-contents [canvas]
-  (let [pixels (util/->Uint8ClampedArray
-                 (decode "UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn" 100 100))
+  (let [pixels (decode "UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn" 100 100)
         ctx (.getContext canvas "2d")
         imageData (.createImageData ctx 100 100)]
     (do
