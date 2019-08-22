@@ -1,8 +1,8 @@
 (ns blurhash.decode-test
   (:require [blurhash.decode :as d]
-            [blurhash.util :as util]
             [clojure.string :refer [join]]
-            [clojure.test :refer [deftest testing is]]))
+            [clojure.test :refer [deftest testing is]]
+            #?(:cljs [blurhash.util :as util])))
 
 (def test-hash
   "UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn")
@@ -14,21 +14,24 @@
          (is (= 236 (count pic)))
          (is (= 300 (count (first pic)))))
        (testing "Content looks right"
-         (is (= [158 169 150] (first (first pic))))))))
+         (is (= [158 169 150] (first (first pic)))))))
   #?(:cljs
      (testing "Dimensions look right"
        (is (= (* 236 300 4) (-> test-hash
                                 (d/decode 300 236)
                                 util/Uint8ClampedArray->vec
-                                count)))))
+                                count))))))
 
 (deftest helper-tests
   (let [real-max-val (d/get-real-maxval test-hash 1.0)]
     (is (= 0.1144578313253012 real-max-val))
     (testing "The size info is decoded"
       (is (= {:size-x 4 :size-y 4} (d/decode-components test-hash))))
-    #?(:clj (testing "An exception is thrown if the input is invalid"
-      (is (thrown? Exception (d/decode-components ((comp join rest) test-hash))))))
+    (testing "An exception is thrown if the input is invalid"
+      #?(:clj
+         (is (thrown? Exception (d/decode-components ((comp join rest) test-hash)))))
+      #?(:cljs
+         (is (thrown? js/Error (d/decode-components ((comp join rest) test-hash))))))
     (testing "Color decoding"
       (let [colors (d/get-colors test-hash 4 4 real-max-val)]
         (is (= [0.2831487404299921 0.238397573812271 0.22696587351009836]

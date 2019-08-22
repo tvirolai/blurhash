@@ -31,7 +31,8 @@
            (+ 4 (* 2 size-x size-y)))
       {:size-x size-x
        :size-y size-y}
-      (throw (Exception. "Invalid blurhash length")))))
+      #?(:clj (throw (Exception. "Invalid blurhash length")))
+      #?(:cljs (throw (js/Error. "Invalid blurhash lenght"))))))
 
 (defn get-real-maxval [blurhash punch]
   (let [quant-max-val (base83/decode (str (second blurhash)))]
