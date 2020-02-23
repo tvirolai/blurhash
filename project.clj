@@ -3,18 +3,16 @@
   :url "http://github.com/siili-core/blurhash"
   :license {:name "MIT License"
             :url "https://github.com/siili-core/blurhash/blob/master/LICENSE"}
-  :dependencies [[org.clojure/clojure "1.10.0"]
-                 [org.clojure/clojurescript "1.10.520"]
-                 ;; This version of rrb-vector needs to be required for now, otherwise cljsbuild will fail.
-                 ;; See the issue CRRBV-19.
-                 [org.clojure/core.rrb-vector "0.0.14"]]
+  :dependencies [[org.clojure/clojure "RELEASE"]
+                 [org.clojure/clojurescript "RELEASE"]
+                 [org.clojure/core.rrb-vector "0.1.1"]]
   :aliases {"analyze" ["eastwood" "{:linters [:unused-namespaces]}"]
             "test-browser" ["doo" "chrome-headless" "test"]
             "test-advanced" ["doo" "chrome-headless" "advanced-test"]
             "test-node" ["doo" "node" "node-test"]}
   :plugins [[jonase/eastwood "0.3.5"]
             [lein-shell "0.5.0"]
-            [lein-doo "0.1.10"]
+            [lein-doo "0.1.11"]
             [lein-cljsbuild "1.1.7"]]
   :deploy-repositories [["clojars" {:url "https://clojars.org/repo"
                                     :username :env/clojars_user

@@ -1,0 +1,1 @@
+{:lint-as {blurhash.util/forv clojure.core/for}}
