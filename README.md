@@ -5,7 +5,7 @@
 
 A Clojure implementation of [Blurhash](https://blurha.sh/).
 
-Blurhash is an algorithm by [Dag Ågren](https://github.com/DagAgren) of [Wolt](https://wolt.com) that decodes an image to a very compact (~ 20-30 bytes) ASCII string representation, which can be then decoded into a blurred placeholder image. See the [main repo](https://github.com/woltapp/blurhash) for the rationale and details. 
+Blurhash is an algorithm by [Dag Ågren](https://github.com/DagAgren) of [Wolt](https://wolt.com) that decodes an image to a very compact (~ 20-30 bytes) ASCII string representation, which can be then decoded into a blurred placeholder image. See the [main repo](https://github.com/woltapp/blurhash) for the rationale and details.
 
 ## Latest version
 
@@ -102,7 +102,7 @@ In ClojureScript (Reagent), you can decode a hash and render the placeholder lik
 
 # MIT License
 
-Copyright (c) 2019 .core
+Copyright (c) 2019-2020 .core
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
