@@ -1,5 +1,5 @@
 (ns blurhash.core-test
-  (:require [blurhash.core :refer [file->pixels]]
+  (:require [blurhash.core :refer [file->pixels pixels->file]]
             [clojure.java.io :as io]
             [clojure.test :refer :all]))
 
@@ -10,7 +10,7 @@
   "./resources/example-blurred.jpg")
 
 (def temporary-file
-  "./resources/test-file.png")
+  "./resources/test-file.jpg")
 
 (defn with-temp-file-cleaned [f]
   (f)
@@ -25,3 +25,14 @@
     (testing "Dimensions match"
       (is (= 236 (count blurred-matrix)))
       (is (= 300 (count (first blurred-matrix)))))))
+
+(deftest pixel->file-test
+  (let [pixels (file->pixels blurred-test-file-name)
+        saved-pixels (do
+                       (pixels->file pixels temporary-file)
+                       (file->pixels temporary-file))]
+    (testing "Dimensions match"
+      (is (= (count pixels) (count saved-pixels)))
+      (is (= (count (first pixels)) (count (first saved-pixels)))))
+    (testing "The pixels are identical"
+      (is (= pixels saved-pixels)))))
