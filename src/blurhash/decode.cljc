@@ -10,13 +10,11 @@
                 (bit-and value 255))))
 
 (defn decode-ac [blurhash value maxvalue]
-	(let [ac-component (base83/decode (subs blurhash
+  (let [ac-component (base83/decode (subs blurhash
                                           (+ 4 (* 2 value))
                                           (+ 4 (* 2 (inc value)))))]
     (mapv (fn [v]
-            (-> v
-                (- 9.0)
-                (/ 9.0)
+            (-> (/ (- v 9.0) 9.0)
                 (util/sign-pow 2.0)
                 (* maxvalue)))
           (list (int (/ ac-component (* 19 19)))
