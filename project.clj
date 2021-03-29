@@ -1,8 +1,8 @@
-(defproject siili-core/blurhash "0.0.7"
+(defproject tvirolai/blurhash "0.0.7"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/tvirolai/blurhash"
   :license {:name "MIT License"
-            :url "https://github.com/siili-core/blurhash/blob/master/LICENSE"}
+            :url "https://github.com/tvirolai/blurhash/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "RELEASE"]
                  [org.clojure/clojurescript "RELEASE"]
                  [org.clojure/core.rrb-vector "0.1.2"]]
