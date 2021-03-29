@@ -1,7 +1,8 @@
 (ns blurhash.core-test
-  (:require [blurhash.core :refer [file->pixels pixels->file]]
+  (:require [blurhash.core :refer [file->pixels image->pixels pixels->file]]
             [clojure.java.io :as io]
-            [clojure.test :refer :all]))
+            [clojure.test :refer :all])
+  (:import (javax.imageio ImageIO)))
 
 (def test-file-name
   "./resources/example.jpg")
@@ -19,6 +20,13 @@
       (io/delete-file temp-file))))
 
 (use-fixtures :once with-temp-file-cleaned)
+
+(deftest image->pixels-test
+  (let [blurred-image  (-> blurred-test-file-name io/file ImageIO/read)
+        blurred-matrix (image->pixels blurred-image)]
+    (testing "Dimensions match"
+      (is (= 236 (count blurred-matrix)))
+      (is (= 300 (count (first blurred-matrix)))))))
 
 (deftest file->pixels-test
   (let [blurred-matrix (file->pixels blurred-test-file-name)]

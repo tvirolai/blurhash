@@ -5,9 +5,8 @@
            (java.awt Color)
            (javax.imageio ImageIO)))
 
-(defn file->pixels [path]
-  (let [image (-> path io/file ImageIO/read)
-        width (.getWidth image)]
+(defn image->pixels [^BufferedImage image]
+  (let [width (.getWidth image)]
     (map vec
          (partition width
                     (for [row-index (range (.getHeight image))
@@ -17,6 +16,9 @@
                       (vector (.getRed rgb-object)
                               (.getGreen rgb-object)
                               (.getBlue rgb-object)))))))
+
+(defn file->pixels [path]
+  (-> path io/file ImageIO/read image->pixels))
 
 (defn pixels->file [pixels ^String filename]
   (let [height (count pixels)
