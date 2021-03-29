@@ -78,10 +78,10 @@ workflows:
       - test-cljs:
           requires:
             - build
-      - deploy:
-          requires:
-            - build
-            - test-cljs
-          filters:
-            branches:
-              only: master
+      # - deploy:
+      #     requires:
+      #       - build
+      #       - test-cljs
+      #     filters:
+      #       branches:
+      #         only: master
