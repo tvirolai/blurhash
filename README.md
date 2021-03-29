@@ -1,6 +1,6 @@
 # Blurhash
 
-[![CircleCI](https://circleci.com/gh/siili-core/blurhash.svg?style=svg)](https://circleci.com/gh/siili-core/blurhash)
+[![CircleCI](https://circleci.com/gh/tvirolai/blurhash.svg?style=svg)](https://circleci.com/gh/tvirolai/blurhash)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Clojure implementation of [Blurhash](https://blurha.sh/).
@@ -9,7 +9,7 @@ Blurhash is an algorithm by [Dag Ågren](https://github.com/DagAgren) of [Wolt](
 
 ## Latest version
 
-[![Clojars Project](https://img.shields.io/clojars/v/siili-core/blurhash.svg)](https://clojars.org/siili-core/blurhash)
+[![Clojars Project](https://img.shields.io/clojars/v/tvirolai/blurhash.svg)](https://clojars.org/tvirolai/blurhash)
 
 Both the encoder and decoder are implemented and work in both Clojure and ClojureScript. They will be optimized a lot in the near future, however. The API may change.
 
@@ -17,11 +17,11 @@ Both the encoder and decoder are implemented and work in both Clojure and Clojur
 
 The encode->hash->decode cycle looks something like this:
 
-![a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example.jpg)
+![a cute hedgehog](https://raw.githubusercontent.com/tvirolai/blurhash/master/resources/example.jpg)
 
 → `UIGuXeS@x[xX_MORbuoy?uNGM{nTNHMzIVnn` →
 
-![essence of a cute hedgehog](https://raw.githubusercontent.com/siili-core/blurhash/master/resources/example-blurred.jpg)
+![essence of a cute hedgehog](https://raw.githubusercontent.com/tvirolai/blurhash/master/resources/example-blurred.jpg)
 
 The Clojure implementation is written in CLJC files, so that they can be used from Clojure and ClojureScript code alike.
 

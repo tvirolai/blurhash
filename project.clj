@@ -1,4 +1,4 @@
-(defproject tvirolai/blurhash "0.0.7"
+(defproject tvirolai/blurhash "0.0.7-SNAPSHOT"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/tvirolai/blurhash"
   :license {:name "MIT License"
@@ -15,8 +15,7 @@
             [lein-doo "0.1.11"]
             [lein-cljsbuild "1.1.7"]]
   :deploy-repositories [["clojars" {:url "https://clojars.org/repo"
-                                    :username :env/clojars_user
-                                    :password :env/clojars_pass
+                                    :creds :gpg
                                     :sign-releases false}]]
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
@@ -32,7 +31,6 @@
         :karma {:config {"plugins" ["karma-junit-reporter"]
                          "reporters" ["progress", "junit"]
                          "junitReporter" {"outputDir" "target/results/cljs"}}}}
-
   :cljsbuild {:builds [{:id "test"
                         :source-paths ["src" "test/cljc" "test/cljs"]
                         :compiler {:output-to "target/out/test.js"
