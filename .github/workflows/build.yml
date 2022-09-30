@@ -1,0 +1,75 @@
+name: blurhash
+
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Maven cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-lein-${{ hashFiles('project.clj') }}
+          restore-keys: |
+            ${{ runner.os }}-lein-
+
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - uses: browser-actions/setup-chrome@latest
+      - name: Set environment
+        run: |
+          VERSION_NUMBER=$([ "${GITHUB_REF_NAME}" == "master" ] && echo "1.2.${GITHUB_RUN_NUMBER}" || echo "0.2.${GITHUB_RUN_NUMBER}-${GITHUB_REF_NAME//\//-}")
+          echo "VERSION_NUMBER=$VERSION_NUMBER"
+          echo "STATIC_DIR=static" >> $GITHUB_ENV
+          echo "VERSION_NUMBER=$VERSION_NUMBER" >> $GITHUB_ENV
+
+      - name: Preparation for build
+        run: |
+          sudo chown root /opt/google/chrome/chrome-sandbox
+          sudo chmod 4755 /opt/google/chrome/chrome-sandbox
+          STATIC_DIR=static
+          echo $VERSION_NUMBER > $STATIC_DIR/_version
+          node -v
+          yarn
+
+      - name: Run Clojure tests
+        run: |
+          lein test
+
+      - name: Run ClojureScript tests
+        run: |
+          lein do test-browser once, test-node once, test-advanced once
+
+      # - name: Build the application
+      #   run: |
+      #     lein figwheel:dist
+
+      # - name: Copy artifacts in place
+      #   run: |
+      #     mkdir -p $STATIC_DIR/js
+      #     mkdir -p $STATIC_DIR/css
+      #     cp resources/public/js/dist/yle-tagger.js $STATIC_DIR/js/yle-tagger.js
+      #     cp resources/public/css/yle-tagger.css $STATIC_DIR/css/yle-tagger.css
