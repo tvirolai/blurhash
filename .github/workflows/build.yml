@@ -50,8 +50,6 @@ jobs:
         run: |
           sudo chown root /opt/google/chrome/chrome-sandbox
           sudo chmod 4755 /opt/google/chrome/chrome-sandbox
-          STATIC_DIR=static
-          echo $VERSION_NUMBER > $STATIC_DIR/_version
           node -v
           yarn
 
