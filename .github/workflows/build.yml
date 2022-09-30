@@ -51,7 +51,7 @@ jobs:
           sudo chown root /opt/google/chrome/chrome-sandbox
           sudo chmod 4755 /opt/google/chrome/chrome-sandbox
           node -v
-          yarn
+          yarn install --ignore-engines --frozen-lockfile
 
       - name: Run Clojure tests
         run: |
