@@ -14,10 +14,10 @@
             [lein-doo "0.1.11"]
             [lein-shell "0.5.0"]
             [lein-cljsbuild "1.1.8"]]
- ;; :doo {:build "test"
- ;;        :alias {:browsers [:chrome-headless :firefox]
- ;;                :all      [:browsers]}
- ;;        :paths {:karma "./node_modules/karma/bin/karma --port 3452 --log-level=error"}}
+  :doo {:build "test"
+        :alias {:browsers [:chrome-headless :firefox]
+                :all      [:browsers]}
+        :paths {:karma "./node_modules/karma/bin/karma --port 3452 --log-level=error"}}
   :deploy-repositories [["clojars" {:url           "https://clojars.org/repo"
                                     :creds         :gpg
                                     :sign-releases false}]]
@@ -37,12 +37,12 @@
                                        :output-dir    "target/out"
                                        :main          runner
                                        :optimizations :none}}
-                       {:id           "advanced-test"
-                        :source-paths ["src" "test/cljc" "test/cljs"]
-                        :compiler     {:output-to     "target/advanced_out/test.js"
-                                       :output-dir    "target/advanced_out"
-                                       :main          runner
-                                       :optimizations :advanced}}
+                       ;; {:id           "advanced-test"
+                       ;;  :source-paths ["src" "test/cljc" "test/cljs"]
+                       ;;  :compiler     {:output-to     "target/advanced_out/test.js"
+                       ;;                 :output-dir    "target/advanced_out"
+                       ;;                 :main          runner
+                       ;;                 :optimizations :advanced}}
                        {:id           "node-test"
                         :source-paths ["src" "test/cljc" "test/cljs"]
                         :compiler     {:output-to     "target/node_out/test.js"
