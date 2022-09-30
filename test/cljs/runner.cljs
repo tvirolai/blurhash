@@ -1,11 +1,9 @@
 (ns runner
-  (:require [cljs.test :refer [run-tests]]
-            blurhash.base83-test
-            blurhash.decode-test
-            blurhash.util-test))
+  (:require [doo.runner :refer-macros [doo-all-tests]]
+            [blurhash.base83-test]
+            [blurhash.decode-test]
+            [blurhash.util-test]))
 
 (enable-console-print!)
 
-(run-tests 'blurhash.base83-test
-           'blurhash.decode-test
-           'blurhash.util-test)
+(doo-all-tests #"blurhash.*-test")
