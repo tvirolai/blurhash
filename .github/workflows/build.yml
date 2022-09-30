@@ -57,9 +57,17 @@ jobs:
         run: |
           lein test
 
-      - name: Run ClojureScript tests
+      - name: Run ClojureScript tests on the browser
         run: |
-          lein do test-browser once, test-node once, test-advanced once
+          lein test-browser once
+
+      - name: Run ClojureScript tests on Node.js
+        run: |
+          lein test-node once
+
+      - name: Run ClojureScript with advanced optimizations
+        run: |
+          lein test-advanced once
 
       # - name: Build the application
       #   run: |
