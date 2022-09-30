@@ -1,6 +1,6 @@
 # Blurhash
 
-[![CircleCI](https://circleci.com/gh/tvirolai/blurhash.svg?style=svg)](https://circleci.com/gh/tvirolai/blurhash)
+[![Build Status](https://github.com/tvirolai/blurhash/actions/workflows/build.yml/badge.svg)](https://github.com/tvirolai/blurhash/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Clojure implementation of [Blurhash](https://blurha.sh/).
