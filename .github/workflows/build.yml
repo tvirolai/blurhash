@@ -8,6 +8,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v2
+      - uses: browser-actions/setup-firefox@latest
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
