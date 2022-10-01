@@ -1,4 +1,4 @@
-(defproject tvirolai/blurhash "0.0.7-SNAPSHOT"
+(defproject tvirolai/blurhash "0.0.8-SNAPSHOT"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/tvirolai/blurhash"
   :license {:name "MIT License"
@@ -15,7 +15,7 @@
             [lein-shell "0.5.0"]
             [lein-cljsbuild "1.1.8"]]
   :doo {:build "test"
-        :alias {:browsers [:chrome-headless :firefox]
+        :alias {:browsers [:chrome-headless :firefox-headless]
                 :all      [:browsers]}
         :paths {:karma "./node_modules/karma/bin/karma --port 3452 --log-level=error"}}
   :deploy-repositories [["clojars" {:url           "https://clojars.org/repo"
