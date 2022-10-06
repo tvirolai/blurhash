@@ -1,4 +1,4 @@
-(defproject tvirolai/blurhash "0.0.8-SNAPSHOT"
+(defproject tvirolai/blurhash "_"
   :description "A Clojure(Script) implementation of the blurhash algorithm"
   :url "http://github.com/tvirolai/blurhash"
   :license {:name "MIT License"
@@ -10,25 +10,20 @@
             "test-browser"  ["doo" "chrome-headless" "test"]
             "test-advanced" ["doo" "chrome-headless" "advanced-test"]
             "test-node"     ["doo" "node" "node-test"]}
-  :plugins [[jonase/eastwood "1.2.3"]
+  :plugins [[fi.polycode/lein-git-revisions "LATEST"]
+            [jonase/eastwood "1.2.3"]
             [lein-doo "0.1.11"]
             [lein-shell "0.5.0"]
-            [lein-cljsbuild "1.1.8"]]
+            [lein-cljsbuild "1.1.8"]
+            [lein-pprint "1.3.2"]]
   :doo {:build "test"
         :alias {:browsers [:chrome-headless :firefox-headless]
                 :all      [:browsers]}
         :paths {:karma "./node_modules/karma/bin/karma --port 3452 --log-level=error"}}
   :deploy-repositories [["clojars" {:url           "https://clojars.org/repo"
-                                    :creds         :gpg
+                                    :username      :env/CLOJARS_USERNAME
+                                    :password      :env/CLOJARS_TOKEN
                                     :sign-releases false}]]
-  :release-tasks [["vcs" "assert-committed"]
-                  ["change" "version" "leiningen.release/bump-version" "release"]
-                  ["shell" "git" "commit" "-am" "Version ${:version} [ci skip]"]
-                  ["vcs" "tag" "v" "--no-sign"]
-                  ["deploy"]
-                  ["change" "version" "leiningen.release/bump-version"]
-                  ["shell" "git" "commit" "-am" "Version ${:version} [ci skip]"]
-                  ["vcs" "push"]]
   :repl-options {:init-ns blurhash.core}
   :test-paths ["test/clj" "test/cljc" "test/cljs"]
   :cljsbuild {:builds [{:id           "test"
@@ -49,4 +44,7 @@
                                        :output-dir    "target/node_out"
                                        :main          runner
                                        :optimizations :none
-                                       :target        :nodejs}}]})
+                                       :target        :nodejs}}]}
+  :git-revisions {:format        :semver
+                  :adjust        [:env/REVISIONS_ADJUSTMENT :minor]
+                  :revision-file "resources/metadata.edn"})

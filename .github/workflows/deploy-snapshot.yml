@@ -1,0 +1,35 @@
+name: Deploy latest SNAPSHOT to Clojars
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  clojure:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Prepare java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@3.7
+        with:
+          lein: latest
+
+      - name: Set revision increment adjustment
+        run: echo "REVISIONS_ADJUSTMENT=patch" >> $GITHUB_ENV
+
+      - name: Deploy to Clojars
+        run: lein deploy clojars
+        env:
+          CLOJARS_USERNAME: ${{ secrets.CLOJARS_USERNAME }}
+          CLOJARS_TOKEN: ${{ secrets.CLOJARS_TOKEN }}

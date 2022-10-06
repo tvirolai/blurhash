@@ -1,0 +1,56 @@
+name: Deploy new release to Clojars
+on:
+  workflow_dispatch:
+    inputs:
+      adjustment:
+        description: 'Release increment type. Defaults to "minor", available values are "major", "minor" and "patch"'
+        required: true
+        default: 'minor'
+
+env:
+  REVISIONS_RELEASE: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Prepare java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@3.7
+        with:
+          lein: latest
+
+      - name: Inject revision increment adjustment
+        run: echo "REVISIONS_ADJUSTMENT=${{ github.event.inputs.adjustment }}" >> $GITHUB_ENV
+
+      - name: Deploy to Clojars
+        run: lein deploy clojars
+        env:
+          CLOJARS_USERNAME: ${{ secrets.CLOJARS_USERNAME }}
+          CLOJARS_TOKEN: ${{ secrets.CLOJARS_TOKEN }}
+
+      - name: Extract version
+        id: version
+        run: echo "::set-output name=version::$(lein pprint :version | tr -d '\"')"
+
+      - name: Create tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/v${{steps.version.outputs.version}}",
+              sha: context.sha
+            })
