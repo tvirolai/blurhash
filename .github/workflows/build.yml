@@ -69,10 +69,3 @@ jobs:
       # - name: Build the application
       #   run: |
       #     lein figwheel:dist
-
-      # - name: Copy artifacts in place
-      #   run: |
-      #     mkdir -p $STATIC_DIR/js
-      #     mkdir -p $STATIC_DIR/css
-      #     cp resources/public/js/dist/yle-tagger.js $STATIC_DIR/js/yle-tagger.js
-      #     cp resources/public/css/yle-tagger.css $STATIC_DIR/css/yle-tagger.css
