@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: browser-actions/setup-firefox@latest
-      - uses: actions/setup-java@v6
+      - uses: actions/setup-java@v5
         with:
           distribution: 'adopt'
           java-version: '17'
