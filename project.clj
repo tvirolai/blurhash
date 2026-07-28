@@ -3,14 +3,14 @@
   :url "http://github.com/tvirolai/blurhash"
   :license {:name "MIT License"
             :url  "https://github.com/tvirolai/blurhash/blob/master/LICENSE"}
-  :dependencies [[org.clojure/clojure "1.11.1"]
-                 [org.clojure/clojurescript "1.11.4"]
-                 [org.clojure/core.rrb-vector "0.1.2"]]
+  :dependencies [[org.clojure/clojure "LATEST"]
+                 [org.clojure/clojurescript "LATEST"]
+                 [org.clojure/core.rrb-vector "0.2.1"]]
   :aliases {"analyze"       ["eastwood" "{:linters [:unused-namespaces]}"]
             "test-browser"  ["doo" "chrome-headless" "test"]
             "test-advanced" ["doo" "chrome-headless" "advanced-test"]
             "test-node"     ["doo" "node" "node-test"]}
-  :plugins [[jonase/eastwood "1.2.3"]
+  :plugins [[jonase/eastwood "1.4.3"]
             [lein-doo "0.1.11"]
             [lein-shell "0.5.0"]
             [lein-cljsbuild "1.1.8"]]
